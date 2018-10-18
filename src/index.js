@@ -172,10 +172,15 @@ class Route {
 const toQuerystring = obj => Object.keys(obj)
   .filter(key => obj[key] !== null && obj[key] !== undefined)
   .map(key => {
-    let value = obj[key]
+    const value = obj[key]
 
     if (Array.isArray(value)) {
-      value = value.join('/')
+      return value.map(
+        itemValue => ([
+          encodeURIComponent(key),
+          encodeURIComponent(itemValue)
+        ].join('='))
+      ).join('&')
     }
     return [
       encodeURIComponent(key),
